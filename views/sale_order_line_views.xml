@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vista de Lista para sale.order.line -->
+    <record id="view_sale_order_line_tree" model="ir.ui.view">
+        <field name="name">sale.order.line.tree</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Order Lines" limit="5000">
+                <field name="order_id" widget='many2one_clickable'/>
+                <field name="related_partner_id" optional="show"/>
+                <field name="related_date_order" optional="show"/>
+                <field name="product_id" optional="show"/>
+                <field name="product_uom_qty" optional="show"/>
+                <field name="qty_delivered" optional="show"/>
+                <field name="qty_not_delivered" optional="show"/>
+                <field name="product_uom" optional="hide"/>
+                <!-- Agrega más campos aquí según tus necesidades -->
+            </tree>
+        </field>
+    </record>
+        <!-- Vista de Búsqueda para sale.order.line -->
+    <record id="view_sale_order_line_search" model="ir.ui.view">
+        <field name="name">sale.order.line.search</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Línea de Orden de Venta">
+                <field name="order_id" string="Orden de Venta"/>
+                <field name="product_id" string="Producto"/>
+                <!-- Aquí puedes agregar más campos para la búsqueda -->
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]" />
+                <filter string="Confirmado" name="confirmed" domain="[('state','=','sale')]" />
+                <!--<group expand="0" string="Group By">
+                    <filter string="Orden" context="{'group_by':'order_id'}"/>
+                    <filter string="Producto" context="{'group_by':'product_id'}"/>
+                </group>-->
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Acción para abrir la vista de lista -->
+    <record id="action_sale_order_lines" model="ir.actions.act_window">
+        <field name="name">Líneas de Orden de Venta</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="nahe_so_line_tree.view_sale_order_line_tree"/>
+        <field name="search_view_id" ref="nahe_so_line_tree.view_sale_order_line_search"/>
+    </record>
+
+
+    <!-- Menú para acceder a la vista de lista -->
+    <menuitem id="menu_sale_order_lines" name="Líneas de Orden de Venta"
+              parent="sale.sale_order_menu" sequence="20" 
+              action="nahe_so_line_tree.action_sale_order_lines"/>
+</odoo>
